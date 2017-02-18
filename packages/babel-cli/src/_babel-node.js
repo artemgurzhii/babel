@@ -9,6 +9,7 @@ import * as babel from "babel-core";
 import vm from "vm";
 import "babel-polyfill";
 import register from "babel-register";
+import { version } from "../package.json";
 
 const program = new commander.Command("babel-node");
 
@@ -20,8 +21,7 @@ program.option("-x, --extensions [extensions]", "List of extensions to hook into
 program.option("-w, --plugins [string]", "", util.list);
 program.option("-b, --presets [string]", "", util.list);
 
-const pkg = require("../package.json");
-program.version(pkg.version);
+program.version(version);
 program.usage("[options] [ -e script | script.js ] [arguments]");
 program.parse(process.argv);
 
@@ -94,7 +94,7 @@ if (program.eval || program.print) {
   const result = _eval(code, global.__filename);
   if (program.print) {
     const output = typeof result === "string" ? result : inspect(result);
-    process.stdout.write(output + "\n");
+    process.stdout.write(`${output}\n`);
   }
 } else {
   if (program.args.length) {
